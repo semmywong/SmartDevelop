@@ -5,7 +5,7 @@ create table sys_social
 (
     id                 int8             not null,
     user_id            int8             not null,
-    tenant_id          varchar(20)      default null::varchar,
+    tenant_id          varchar(20)      default '000000'::varchar,
     auth_id            varchar(255)     not null,
     source             varchar(255)     not null,
     open_id            varchar(255)     default null::varchar,
@@ -741,10 +741,10 @@ create table if not exists sys_oper_log
     oper_url       varchar(255)  default ''::varchar,
     oper_ip        varchar(128)  default ''::varchar,
     oper_location  varchar(255)  default ''::varchar,
-    oper_param     varchar(2000) default ''::varchar,
-    json_result    varchar(2000) default ''::varchar,
+    oper_param     varchar(5000) default ''::varchar,
+    json_result    varchar(5000) default ''::varchar,
     status         int4          default 0,
-    error_msg      varchar(2000) default ''::varchar,
+    error_msg      varchar(5000) default ''::varchar,
     oper_time      timestamp,
     cost_time      int8          default 0,
     constraint sys_oper_log_pk primary key (oper_id)

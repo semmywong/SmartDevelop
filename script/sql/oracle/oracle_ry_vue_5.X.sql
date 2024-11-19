@@ -5,7 +5,7 @@ create table sys_social
 (
     id                 number(20)        not null,
     user_id            number(20)        not null,
-    tenant_id          varchar2(20)      default null,
+    tenant_id          varchar2(20)      default '000000',
     auth_id            varchar2(255)     not null,
     source             varchar2(255)     not null,
     open_id            varchar2(255)     default null,
@@ -738,10 +738,10 @@ create table sys_oper_log (
   oper_url          varchar2(255)   default '',
   oper_ip           varchar2(128)   default '',
   oper_location     varchar2(255)   default '',
-  oper_param        varchar2(2100)  default '',
-  json_result       varchar2(2100)  default '',
+  oper_param        varchar2(5500)  default '',
+  json_result       varchar2(5500)  default '',
   status            number(1)       default 0,
-  error_msg         varchar2(2100)  default '',
+  error_msg         varchar2(5500)  default '',
   oper_time         date,
   cost_time         number(20)      default 0
 );
