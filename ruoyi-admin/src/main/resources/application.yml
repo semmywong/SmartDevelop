@@ -139,6 +139,8 @@ tenant:
 # MyBatisPlus配置
 # https://baomidou.com/config/
 mybatis-plus:
+  # 自定义配置 是否全局开启逻辑删除 关闭后 所有逻辑删除功能将失效
+  enableLogicDelete: true
   # 多包名使用 例如 org.dromara.**.mapper,org.xxx.**.mapper
   mapperPackage: org.dromara.**.mapper
   # 对应的 XML 文件位置
@@ -215,6 +217,8 @@ springdoc:
       packages-to-scan: org.dromara.system
     - group: 4.代码生成模块
       packages-to-scan: org.dromara.generator
+    - group: 5.工作流模块
+      packages-to-scan: org.dromara.workflow
 
 # 防止XSS攻击
 xss:
