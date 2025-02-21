@@ -63,7 +63,7 @@ public class GenTableServiceImpl implements IGenTableService {
     private final GenTableColumnMapper genTableColumnMapper;
     private final IdentifierGenerator identifierGenerator;
 
-    private static final String[] TABLE_IGNORE = new String[]{"sj_", "act_", "flw_", "gen_"};
+    private static final String[] TABLE_IGNORE = new String[]{"sj_", "flow_", "gen_"};
 
     /**
      * 查询业务字段列表
@@ -137,7 +137,7 @@ public class GenTableServiceImpl implements IGenTableService {
         }
         // 过滤并转换表格数据
         List<GenTable> tables = tablesMap.values().stream()
-            .filter(x -> !startWithAnyIgnoreCase(x.getName(), TABLE_IGNORE))
+            .filter(x -> !StringUtils.startWithAnyIgnoreCase(x.getName(), TABLE_IGNORE))
             .filter(x -> {
                 if (CollUtil.isEmpty(tableNames)) {
                     return true;
@@ -162,7 +162,8 @@ public class GenTableServiceImpl implements IGenTableService {
                 GenTable gen = new GenTable();
                 gen.setTableName(x.getName());
                 gen.setTableComment(x.getComment());
-                gen.setCreateTime(x.getCreateTime());
+                // postgresql的表元数据没有创建时间这个东西(好奇葩) 只能new Date代替
+                gen.setCreateTime(ObjectUtil.defaultIfNull(x.getCreateTime(), new Date()));
                 gen.setUpdateTime(x.getUpdateTime());
                 return gen;
             }).sorted(Comparator.comparing(GenTable::getCreateTime).reversed())
@@ -173,16 +174,6 @@ public class GenTableServiceImpl implements IGenTableService {
         // 手动分页 set数据
         page.setRecords(CollUtil.page((int) page.getCurrent() - 1, (int) page.getSize(), tables));
         return TableDataInfo.build(page);
-    }
-
-    public static boolean startWithAnyIgnoreCase(CharSequence cs, CharSequence... searchCharSequences) {
-        // 判断是否是以指定字符串开头
-        for (CharSequence searchCharSequence : searchCharSequences) {
-            if (StringUtils.startsWithIgnoreCase(cs, searchCharSequence)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -203,7 +194,7 @@ public class GenTableServiceImpl implements IGenTableService {
         }
 
         List<Table<?>> tableList = tablesMap.values().stream()
-            .filter(x -> !startWithAnyIgnoreCase(x.getName(), TABLE_IGNORE))
+            .filter(x -> !StringUtils.startWithAnyIgnoreCase(x.getName(), TABLE_IGNORE))
             .filter(x -> tableNameSet.contains(x.getName())).toList();
 
         if (CollUtil.isEmpty(tableList)) {

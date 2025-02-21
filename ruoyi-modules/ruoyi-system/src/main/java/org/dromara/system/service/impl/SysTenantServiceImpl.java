@@ -15,6 +15,7 @@ import org.dromara.common.core.constant.Constants;
 import org.dromara.common.core.constant.SystemConstants;
 import org.dromara.common.core.constant.TenantConstants;
 import org.dromara.common.core.exception.ServiceException;
+import org.dromara.common.core.service.WorkflowService;
 import org.dromara.common.core.utils.MapstructUtils;
 import org.dromara.common.core.utils.SpringUtils;
 import org.dromara.common.core.utils.StreamUtils;
@@ -121,7 +122,9 @@ public class SysTenantServiceImpl implements ISysTenantService {
 
         // 获取所有租户编号
         List<String> tenantIds = baseMapper.selectObjs(
-            new LambdaQueryWrapper<SysTenant>().select(SysTenant::getTenantId), x -> {return Convert.toStr(x);});
+            new LambdaQueryWrapper<SysTenant>().select(SysTenant::getTenantId), x -> {
+                return Convert.toStr(x);
+            });
         String tenantId = generateTenantId(tenantIds);
         add.setTenantId(tenantId);
         boolean flag = baseMapper.insert(add) > 0;
@@ -176,10 +179,20 @@ public class SysTenantServiceImpl implements ISysTenantService {
         for (SysDictType dictType : dictTypeList) {
             dictType.setDictId(null);
             dictType.setTenantId(tenantId);
+            dictType.setCreateDept(null);
+            dictType.setCreateBy(null);
+            dictType.setCreateTime(null);
+            dictType.setUpdateBy(null);
+            dictType.setUpdateTime(null);
         }
         for (SysDictData dictData : dictDataList) {
             dictData.setDictCode(null);
             dictData.setTenantId(tenantId);
+            dictData.setCreateDept(null);
+            dictData.setCreateBy(null);
+            dictData.setCreateTime(null);
+            dictData.setUpdateBy(null);
+            dictData.setUpdateTime(null);
         }
         dictTypeMapper.insertBatch(dictTypeList);
         dictDataMapper.insertBatch(dictDataList);
@@ -189,8 +202,20 @@ public class SysTenantServiceImpl implements ISysTenantService {
         for (SysConfig config : sysConfigList) {
             config.setConfigId(null);
             config.setTenantId(tenantId);
+            config.setCreateDept(null);
+            config.setCreateBy(null);
+            config.setCreateTime(null);
+            config.setUpdateBy(null);
+            config.setUpdateTime(null);
         }
         configMapper.insertBatch(sysConfigList);
+
+        // 未开启工作流不执行下方操作
+        if (SpringUtils.getProperty("warm-flow.enabled", Boolean.class, false)) {
+            WorkflowService workflowService = SpringUtils.getBean(WorkflowService.class);
+            // 新增租户流程定义
+            workflowService.syncDef(tenantId);
+        }
         return true;
     }
 
@@ -399,7 +424,9 @@ public class SysTenantServiceImpl implements ISysTenantService {
         // 获取所有租户编号
         List<String> tenantIds = baseMapper.selectObjs(
             new LambdaQueryWrapper<SysTenant>().select(SysTenant::getTenantId)
-                .eq(SysTenant::getStatus, SystemConstants.NORMAL), x -> {return Convert.toStr(x);});
+                .eq(SysTenant::getStatus, SystemConstants.NORMAL), x -> {
+                return Convert.toStr(x);
+            });
         List<SysDictType> saveTypeList = new ArrayList<>();
         List<SysDictData> saveDataList = new ArrayList<>();
         Set<String> set = new HashSet<>();

@@ -31,6 +31,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -301,6 +302,7 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
         @CacheEvict(cacheNames = CacheNames.SYS_DEPT_AND_CHILD, allEntries = true)
     })
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateDept(SysDeptBo bo) {
         SysDept dept = MapstructUtils.convert(bo, SysDept.class);
         SysDept oldDept = baseMapper.selectById(dept.getDeptId());
@@ -321,8 +323,10 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
             dept.setAncestors(oldDept.getAncestors());
         }
         int result = baseMapper.updateById(dept);
-        if (SystemConstants.NORMAL.equals(dept.getStatus()) && StringUtils.isNotEmpty(dept.getAncestors())
-            && !StringUtils.equals(SystemConstants.NORMAL, dept.getAncestors())) {
+        // 如果部门状态为启用，且部门祖级列表不为空，且部门祖级列表不等于根部门祖级列表（如果部门祖级列表不等于根部门祖级列表，则说明存在上级部门）
+        if (SystemConstants.NORMAL.equals(dept.getStatus())
+            && StringUtils.isNotEmpty(dept.getAncestors())
+            && !StringUtils.equals(SystemConstants.ROOT_DEPT_ANCESTORS, dept.getAncestors())) {
             // 如果该部门是启用状态，则启用该部门的所有上级部门
             updateParentDeptStatusNormal(dept);
         }

@@ -175,7 +175,7 @@ EXEC sys.sp_addextendedproperty
     'COLUMN', N'oauth_token_secret'
 GO
 EXEC sys.sp_addextendedproperty
-    'MS_Description', N'删除标志（0代表存在 2代表删除）' ,
+    'MS_Description', N'删除标志（0代表存在 1代表删除）' ,
     'SCHEMA', N'dbo',
     'TABLE', N'sys_social',
     'COLUMN', N'del_flag'
@@ -210,7 +210,11 @@ EXEC sys.sp_addextendedproperty
     'TABLE', N'sys_social',
     'COLUMN', N'update_time'
 GO
-
+EXEC sp_addextendedproperty
+    'MS_Description', N'社会化关系表',
+    'SCHEMA', N'dbo',
+    'TABLE', N'sys_social'
+GO
 
 CREATE TABLE sys_tenant
 (
@@ -218,7 +222,7 @@ CREATE TABLE sys_tenant
     tenant_id             nvarchar(20)                    NOT NULL,
     contact_user_name     nvarchar(20)                    NULL,
     contact_phone         nvarchar(20)                    NULL,
-    company_name          nvarchar(50)                    NULL,
+    company_name          nvarchar(30)                    NULL,
     license_number        nvarchar(30)                    NULL,
     address               nvarchar(200)                   NULL,
     intro                 nvarchar(200)                   NULL,
@@ -326,7 +330,7 @@ EXEC sys.sp_addextendedproperty
     'COLUMN', N'status'
 GO
 EXEC sys.sp_addextendedproperty
-    'MS_Description', N'删除标志（0代表存在 2代表删除）' ,
+    'MS_Description', N'删除标志（0代表存在 1代表删除）' ,
     'SCHEMA', N'dbo',
     'TABLE', N'sys_tenant',
     'COLUMN', N'del_flag'
@@ -423,7 +427,7 @@ EXEC sys.sp_addextendedproperty
     'COLUMN', N'status'
 GO
 EXEC sys.sp_addextendedproperty
-    'MS_Description', N'删除标志（0代表存在 2代表删除）' ,
+    'MS_Description', N'删除标志（0代表存在 1代表删除）' ,
     'SCHEMA', N'dbo',
     'TABLE', N'sys_tenant_package',
     'COLUMN', N'del_flag'
@@ -1013,7 +1017,7 @@ EXEC sys.sp_addextendedproperty
     'COLUMN', N'status'
 GO
 EXEC sys.sp_addextendedproperty
-    'MS_Description', N'删除标志（0代表存在 2代表删除）' ,
+    'MS_Description', N'删除标志（0代表存在 1代表删除）' ,
     'SCHEMA', N'dbo',
     'TABLE', N'sys_dept',
     'COLUMN', N'del_flag'
@@ -1235,7 +1239,7 @@ INSERT sys_dict_data VALUES (18, N'000000', 1, N'新增', N'1', N'sys_oper_type'
 GO
 INSERT sys_dict_data VALUES (19, N'000000', 2, N'修改', N'2', N'sys_oper_type', N'', N'info', N'N', 103, 1, getdate(), NULL, NULL, N'修改操作')
 GO
-INSERT sys_dict_data VALUES (20, N'000000', 3, N'删除', N'3', N'sys_oper_type', N'', N'danger', N'N', 103, 1, getdate(), NULL, NULL, N'删除操作')
+INSERT sys_dict_data VALUES (20, N'000000', 3, N'删除', N3, N'sys_oper_type', N'', N'danger', N'N', 103, 1, getdate(), NULL, NULL, N'删除操作')
 GO
 INSERT sys_dict_data VALUES (21, N'000000', 4, N'授权', N'4', N'sys_oper_type', N'', N'primary', N'N', 103, 1, getdate(), NULL, NULL, N'授权操作')
 GO
@@ -2338,7 +2342,7 @@ EXEC sys.sp_addextendedproperty
     'COLUMN', N'status'
 GO
 EXEC sys.sp_addextendedproperty
-    'MS_Description', N'删除标志（0代表存在 2代表删除）' ,
+    'MS_Description', N'删除标志（0代表存在 1代表删除）' ,
     'SCHEMA', N'dbo',
     'TABLE', N'sys_role',
     'COLUMN', N'del_flag'
@@ -2475,6 +2479,10 @@ INSERT sys_role_menu VALUES (3, 107);
 GO
 INSERT sys_role_menu VALUES (3, 108);
 GO
+INSERT sys_role_menu VALUES (3, 118);
+GO
+INSERT sys_role_menu VALUES (3, 123);
+GO
 INSERT sys_role_menu VALUES (3, 500);
 GO
 INSERT sys_role_menu VALUES (3, 501);
@@ -2569,6 +2577,18 @@ INSERT sys_role_menu VALUES (3, 1044);
 GO
 INSERT sys_role_menu VALUES (3, 1045);
 GO
+INSERT sys_role_menu VALUES (3, 1050);
+GO
+INSERT sys_role_menu VALUES (3, 1061);
+GO
+INSERT sys_role_menu VALUES (3, 1062);
+GO
+INSERT sys_role_menu VALUES (3, 1063);
+GO
+INSERT sys_role_menu VALUES (3, 1064);
+GO
+INSERT sys_role_menu VALUES (3, 1065);
+GO
 INSERT sys_role_menu VALUES (3, 1500);
 GO
 INSERT sys_role_menu VALUES (3, 1501);
@@ -2592,6 +2612,44 @@ GO
 INSERT sys_role_menu VALUES (3, 1510);
 GO
 INSERT sys_role_menu VALUES (3, 1511);
+GO
+INSERT sys_role_menu VALUES (3, 1600);
+GO
+INSERT sys_role_menu VALUES (3, 1601);
+GO
+INSERT sys_role_menu VALUES (3, 1602);
+GO
+INSERT sys_role_menu VALUES (3, 1603);
+GO
+INSERT sys_role_menu VALUES (3, 1620);
+GO
+INSERT sys_role_menu VALUES (3, 1621);
+GO
+INSERT sys_role_menu VALUES (3, 1622);
+GO
+INSERT sys_role_menu VALUES (3, 1623);
+GO
+INSERT sys_role_menu VALUES (3, 11618);
+GO
+INSERT sys_role_menu VALUES (3, 11619);
+GO
+INSERT sys_role_menu VALUES (3, 11629);
+GO
+INSERT sys_role_menu VALUES (3, 11632);
+GO
+INSERT sys_role_menu VALUES (3, 11633);
+GO
+INSERT sys_role_menu VALUES (3, 11638);
+GO
+INSERT sys_role_menu VALUES (3, 11639);
+GO
+INSERT sys_role_menu VALUES (3, 11640);
+GO
+INSERT sys_role_menu VALUES (3, 11641);
+GO
+INSERT sys_role_menu VALUES (3, 11642);
+GO
+INSERT sys_role_menu VALUES (3, 11643);
 GO
 INSERT sys_role_menu VALUES (4, 5);
 GO
@@ -2723,7 +2781,7 @@ EXEC sys.sp_addextendedproperty
     'COLUMN', N'status'
 GO
 EXEC sys.sp_addextendedproperty
-    'MS_Description', N'删除标志（0代表存在 2代表删除）' ,
+    'MS_Description', N'删除标志（0代表存在 1代表删除）' ,
     'SCHEMA', N'dbo',
     'TABLE', N'sys_user',
     'COLUMN', N'del_flag'
@@ -3115,7 +3173,7 @@ INSERT INTO sys_oss_config VALUES (N'1', N'000000', N'minio', N'ruoyi',         
 GO
 INSERT INTO sys_oss_config VALUES (N'2', N'000000', N'qiniu', N'XXXXXXXXXXXXXXXX', N'XXXXXXXXXXXXXXX', N'ruoyi',            N'', N's3-cn-north-1.qiniucs.com',         N'',N'N', N'',           N'1', N'1', N'', 103, 1, getdate(), 1, getdate(), NULL)
 GO
-INSERT INTO sys_oss_config VALUES (N'3', N'000000', N'aliyun', N'XXXXXXXXXXXXXXX', N'XXXXXXXXXXXXXXX', N'ruoyi',            N'', N'oss-cn-beijing.aliyuncs.com',       N'',N'N', N'',           N'1', N'1', N'', 103, 1, getdate(), 1, getdate(), NULL)
+INSERT INTO sys_oss_config VALUES (N3, N'000000', N'aliyun', N'XXXXXXXXXXXXXXX', N'XXXXXXXXXXXXXXX', N'ruoyi',            N'', N'oss-cn-beijing.aliyuncs.com',       N'',N'N', N'',           N'1', N'1', N'', 103, 1, getdate(), 1, getdate(), NULL)
 GO
 INSERT INTO sys_oss_config VALUES (N'4', N'000000', N'qcloud', N'XXXXXXXXXXXXXXX', N'XXXXXXXXXXXXXXX', N'ruoyi-1250000000', N'', N'cos.ap-beijing.myqcloud.com',       N'',N'N', N'ap-beijing', N'1', N'1', N'', 103, 1, getdate(), 1, getdate(), NULL)
 GO
@@ -3202,7 +3260,7 @@ EXEC sp_addextendedproperty
     'COLUMN', N'status'
 GO
 EXEC sp_addextendedproperty
-    'MS_Description', N'删除标志（0代表存在 2代表删除）',
+    'MS_Description', N'删除标志（0代表存在 1代表删除）',
     'SCHEMA', N'dbo',
     'TABLE', N'sys_client',
     'COLUMN', N'del_flag'
